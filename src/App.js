@@ -12,9 +12,7 @@ class App extends Component {
   state = {
     foodList: foods,
     showForm: false,
-    foodName: '',
-    calories: 0,
-    image: ''
+    todaysFood: []
   }
   
   displayFood = () =>{
@@ -24,7 +22,17 @@ class App extends Component {
                       name={food.name}  
                       cal={food.calories}
                       img={food.image}
-                      />
+                      theClikedFoodProp={this.clickedFood}
+     S                 />
+    })
+    return arr
+  }
+
+  displayTodaysFood = () =>{
+    let arr=this.state.todaysFood.map(food=>{
+      return (
+        <li key={food.name}>{food.name} {food.calories}</li>
+      )
     })
     return arr
   }
@@ -41,7 +49,7 @@ class App extends Component {
       image: this.state.image,
       quantity: 0
     }
-
+    //copy previous list and add newFood
     let foodListCopy=[...this.state.foodList]
     foodListCopy.unshift(newFoodObj)
     
@@ -50,6 +58,14 @@ class App extends Component {
     })
   }
 
+  clickedFood = (food) =>{
+    let newTodaysFood=[...this.state.todaysFood]
+    newTodaysFood.push(food)
+    this.setState({
+      todaysFood: newTodaysFood
+    })
+
+  }
 
   handleChange = (event) =>{
     this.setState({
@@ -74,12 +90,27 @@ class App extends Component {
     );
   };
 
+  searchList=(event)=>{
+    // console.log("typing..",event.target.value)
+    let filterFoods=foods.filter(eachFood=>{
+      return eachFood.name.toLowerCase().includes(event.target.value)
+    })
+    this.setState({
+      foodList: filterFoods
+    })
+    // console.log()
+  }
+
+
 
   render(){
     return <div className='App'>
+            <br />
+            <input onChange={this.searchList} placeholder="search" />
             <button onClick={this.toggleForm}>Add Food</button>
             {this.state.showForm? <h1>Form</h1> : this.displayForm()}
-            {this.displayFood()}
+            <ul>{this.displayTodaysFood()}</ul>
+            <ul>{this.displayFood()}</ul>
           </div>
   }//end render
 }//end class

@@ -24,7 +24,7 @@ const FoodBox =(props)=>{
                         <input className="input" type="number" value="1" />
                         </div>
                         <div className="control">
-                        <button className="button is-info">
+                        <button onClick={()=>props.theClikedFoodProp(props)} className="button is-info">
                             +
                         </button>
                         </div>
